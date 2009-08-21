@@ -31,29 +31,35 @@ In theory you should be able to pass it whatever you pass to use.
 Also, I just made it so you can do:
 
   use everywhere 'MooseX::Declare',
-    matching => '^MyApp';
+    matching => '^MyApp',
+    use_here => 0;
 
 for example and then it will only apply this module to things matching your
-regex. This is experimental :)
+regex. And not use it here. This is experimental :)
 
 =cut
 
 use strict;
 use warnings;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub import {
   my ($class, $module, @items) = @_;
-  my $matching = qx/.*/;
+  my $matching = qr/.*/;
   my $use_line = "use $module";
-  if($items[0] eq 'matching') {
-    $matching = eval '$items[1]';
+  if(defined $items[0] && $items[0] eq 'matching') {
+    $matching = $items[1];
+    shift @items; shift @items;
+  }
+  my $use_here = 1;
+  if(defined $items[0] && $items[0] eq 'use_here') {
+    $use_here = eval $items[1];
     shift @items; shift @items;
   }
   $use_line .= " qw/" . join(' ', @items) if @items;
   $use_line .= ";\n";
-  eval $use_line;
+  eval $use_line if $use_here;
   unshift @INC, sub {
     my ($self, $file) = @_;
     if($file =~ $matching) {

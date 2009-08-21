@@ -20,6 +20,12 @@ print $out $f;
 # *** This is the actual Changelog :) ***
 # ***************************************
 __DATA__
+Thu Aug 20 2009  awwaiid@thelackthereof.org
+  * random update to example
+  * version bump
+  * Add use_here flag
+  * er.... I meant qr not qx!
+
 Sun Jul 19 2009  awwaiid@thelackthereof.org
   * Allow whitelisting with a regex
 
@@ -30,4 +36,3 @@ Sun May  4 2008  awwaiid@thelackthereof.org
 Wed Apr 23 2008  awwaiid@thelackthereof.org
   * Ooops... remove all the blib crap from build
   * Initial import
-
