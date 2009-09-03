@@ -42,7 +42,7 @@ regex. And not use it here. This is experimental :)
 use strict;
 use warnings;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 sub import {
   my ($class, $module, @items) = @_;
