@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               everywhere
-version:            0.05
+version:            0.06
 abstract:           Use a module (or feature) everywhere
 author:
     - awwaiid <awwaiid@thelackthereof.org>

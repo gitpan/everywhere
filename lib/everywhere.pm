@@ -35,19 +35,21 @@ Also, I just made it so you can do:
     use_here => 0;
 
 for example and then it will only apply this module to things matching your
-regex. And not use it here. This is experimental :)
+regex. And not use it here. You can also throw in 'package_level => 1' to use
+your package after every "package ..." line. All these are experimental :)
 
 =cut
 
 use strict;
 use warnings;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 sub import {
   my ($class, $module, @items) = @_;
-  my $matching = qr/.*/;
   my $use_line = "use $module";
+  # TODO do this parameter parsing better :)
+  my $matching = qr/.*/;
   if(defined $items[0] && $items[0] eq 'matching') {
     $matching = $items[1];
     shift @items; shift @items;
@@ -57,7 +59,12 @@ sub import {
     $use_here = eval $items[1];
     shift @items; shift @items;
   }
-  $use_line .= " qw/" . join(' ', @items) if @items;
+  my $file_level = 1;
+  if(defined $items[0] && $items[0] eq 'package_level') {
+    $file_level = ! eval $items[1];
+    shift @items; shift @items;
+  }
+  $use_line .= " qw/" . join(' ', @items) . "/" if @items;
   $use_line .= ";\n";
   eval $use_line if $use_here;
   unshift @INC, sub {
@@ -67,11 +74,12 @@ sub import {
         next if ref $dir;
         my $full = "$dir/$file";
         if(open my $fh, "<", $full) {
-          my @lines = ($use_line);
+          my @lines = $file_level ? ($use_line) : ();
           return ($fh, sub {
             if(@lines) {
               push @lines, $_;
               $_ = shift @lines;
+              $_.= $use_line if (!$file_level) && /^\s*package\s+.+\s*;\s*$/;
               return length $_;
             }
             return 0;

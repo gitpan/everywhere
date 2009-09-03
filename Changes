@@ -21,6 +21,8 @@ print $out $f;
 # ***************************************
 __DATA__
 Thu Sep  3 2009  awwaiid@thelackthereof.org
+  * Fix params and add package_level
+  * Version bump
   * version bump
   * shuffle and update
 
