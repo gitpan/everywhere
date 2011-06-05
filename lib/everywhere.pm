@@ -43,7 +43,7 @@ your package after every "package ..." line. All these are experimental :)
 use strict;
 use warnings;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 sub import {
   my ($class, $module, @items) = @_;
@@ -74,7 +74,8 @@ sub import {
         next if ref $dir;
         my $full = "$dir/$file";
         if(open my $fh, "<", $full) {
-          my @lines = $file_level ? ($use_line) : ();
+          my @lines = ($file_level ? ($use_line) : (),
+            qq{#line 1 "$dir/$file"\n});
           return ($fh, sub {
             if(@lines) {
               push @lines, $_;
@@ -110,7 +111,7 @@ Also look at L<use> and L<feature>.
 
 =head1 COPYRIGHT
 
-  Copyright (c) 2008 Brock Wilcox <awwaiid@thelackthereof.org>. All rights
+  Copyright (c) 2008-2011 Brock Wilcox <awwaiid@thelackthereof.org>. All rights
   reserved.  This program is free software; you can redistribute it and/or
   modify it under the same terms as Perl 5.10 or later.
 

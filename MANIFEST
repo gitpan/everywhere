@@ -1,9 +1,12 @@
-MANIFEST
 Changes
+MANIFEST
+Makefile.PL
+README
 eg/Greet.pm
 eg/hi.pl
-t/everywhere.t
-Makefile.PL
 lib/everywhere.pm
-README
+t/00_basic.t
+t/01_hello_world.t
+t/Hello.pm
+t/World.pm
 META.yml                                 Module meta-data (added by MakeMaker)
